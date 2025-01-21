@@ -11,6 +11,8 @@ pipeline {
                 df -h >> versionfile.txt
                 echo "-----------------------------" >> versionfile.txt
                 ls /var/lib/jenkins >> versionfile.txt
+                echo "__________________________________________" >> versionfile.txt
+                cat /etc/os-release >> versionfile.txt
                 '''
             }
         }
