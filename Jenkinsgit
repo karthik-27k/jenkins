@@ -1,12 +1,26 @@
-#!/bin/bash
-echo "___________________________________________________" >> gitjenk.txt
-uptime >> gitjenk.txt
-echo "___________________________________________________" >> gitjenk.txt
-echo "___________________________________________________" >> gitjenk.txt
-df -h >> gitjenk.txt
-echo "___________________________________________________" >> gitjenk.txt
-echo "___________________________________________________" >> gitjenk.txt
-cat /etc/os-release >> gitjenk.txt
-echo "___________________________________________________" >> gitjenk.txt
-echo "___________________________________________________" >> gitjenk.txt
-
+pipeline {
+    agent any
+    
+    stages {
+        stage(Initial build){
+            steps{
+                sh '''
+                uptime >> versionfile.txt
+                echo "_____________________" >> versionfile.txt
+                df -h >> versionfile.txt
+                echo "-----------------------------" >> versionfile.txt
+                ls /var/lib/jenkins >> versionfile.txt
+                versionfile.txt versions/Vfile$VERSION.txt
+                '''
+                }
+            }
+        stage(versioning){
+            steps{
+                sh '''
+                mkdir -p versions
+                mv versionfile.txt File/vfile_$BUILD_ID.txt
+                '''
+            }
+        }
+    }
+}
