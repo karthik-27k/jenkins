@@ -1,23 +1,26 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage(Initial build){
-            steps{
+        stage("Initial build") {
+            steps {
                 sh '''
+                # Generate system info and save to versionfile.txt
                 uptime >> versionfile.txt
                 echo "_____________________" >> versionfile.txt
                 df -h >> versionfile.txt
                 echo "-----------------------------" >> versionfile.txt
                 ls /var/lib/jenkins >> versionfile.txt
-                versionfile.txt versions/Vfile$VERSION.txt
                 '''
-                }
             }
-        stage(versioning){
-            steps{
+        }
+
+        stage("Versioning") {
+            steps {
                 sh '''
-                mkdir -p versions
+                # Create directories if they don't exist
+                mkdir -p File
+                # Move versionfile.txt to the File directory with a unique name
                 mv versionfile.txt File/vfile_$BUILD_ID.txt
                 '''
             }
